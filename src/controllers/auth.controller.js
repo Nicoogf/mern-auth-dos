@@ -1,6 +1,8 @@
+import { createAccessToken } from "../libs/jwt.js";
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+
+
 
 export const register = async (req, res) => {
 
@@ -19,32 +21,27 @@ export const register = async (req, res) => {
       password: passwordHash
     })
 
+
     //Se guarda el usuario creado
     const userSaved = await newUser.save()
 
-    jwt.sign({
-      id: userSaved._id
-    },
-      "secret123",
-      {
-        expiresIn: "1d"
-      },
-      (err, token) => {
-        if (err) console.log(err)
-        res.json({ token })
-      }
-    )
 
-    // res.json({
-    //   id: userSaved._id,
-    //   username: userSaved.username,
-    //   cuentaBancaria: userSaved.cuentaBancaria,
-    //   createdAt: userSaved.createdAt,
-    //   updateAt: userSaved.updatedAt
-    // })
+    //Se crea el token con el id del usuario y se guardaen una cookie
+    const token = await createAccessToken({ id: userSaved._id })
+    res.cookie("token", token)
+
+
+    //Respuesta
+    res.json({
+      id: userSaved._id,
+      username: userSaved.username,
+      cuentaBancaria: userSaved.cuentaBancaria,
+      createdAt: userSaved.createdAt,
+      updateAt: userSaved.updatedAt
+    })
 
   } catch (error) {
-    console.log(error)
+    res.status(500).json({ message: error.message })
   }
 }
 
