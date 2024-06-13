@@ -1,8 +1,9 @@
-import morgan from "morgan";
 import app from "./app.js";
 import { ConnectDB } from "./bd.js";
 
 const PORT_ACTIVE = process.env.PORT || 5000  ;
+
+
 
 ConnectDB()
 app.listen( PORT_ACTIVE , () => {
