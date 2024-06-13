@@ -10,11 +10,13 @@ export const register = async (req, res) => {
   const { username, password } = req.body;
 
 
-  //Hash de la contraseña ingresada por el usuario
-  const passwordHash = await bcrypt.hash(password, 12)
+
 
 
   try {
+    //Hash de la contraseña ingresada por el usuario
+    const passwordHash = await bcrypt.hash(password, 12)
+
     //Se Crea el usuario en base al modelo user
     const newUser = new User({
       username,
@@ -45,6 +47,44 @@ export const register = async (req, res) => {
   }
 }
 
-export const loguin = (req, res) => {
-  res.send("Loguin")
+
+export const loguin = async (req, res) => {
+
+  //En el req.body van a venir los datos del usuario Registrado
+  const { username, password } = req.body;
+
+  try {
+
+    //Se Busca al Usuario si existe por su Username
+    const userFound = await User.findOne({ username })
+
+    if (!userFound) {
+      return res.status(400).json({ message: "Usuario no encontrado" })
+    }
+
+    //Compara contraseña ingresada por el usuario con la guardada en la BD
+    const isMatch = await bcrypt.compare(password, userFound.password)
+
+    if (!isMatch) {
+      return res.status(400).json({ message: "Credenciales incorrectas" })
+    }
+
+
+    //Se crea el token con el id del usuario y se guardaen una cookie
+    const token = await createAccessToken({ id: userFound._id })
+    res.cookie("token", token)
+
+    //Respuesta
+    res.json({
+      id: userFound._id,
+      username: userFound.username,
+      cuentaBancaria: userFound.cuentaBancaria,
+      createdAt: userFound.createdAt,
+      updateAt: userFound.updatedAt
+    })
+
+
+  } catch (error) {
+    res.status(500).json({ message: error.message })
+  }
 }
