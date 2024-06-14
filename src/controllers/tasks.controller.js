@@ -1,7 +1,9 @@
 import Task from "../models/tasks.model.js";
 
 export const getTasks = async (req, res) => {
-    const tasks = await Task.find()
+    const tasks = await Task.find({
+        user: req.user.id
+    }).populate("user")
     res.json(tasks)
 }
 export const createTasks = async (req, res) => {
@@ -10,7 +12,8 @@ export const createTasks = async (req, res) => {
     const newTasks = new Task({
         title,
         description,
-        date
+        date,
+        user: req.user.id
     })
 
     const savedTask = await newTasks.save()
@@ -20,7 +23,7 @@ export const createTasks = async (req, res) => {
 
 
 export const getTask = async (req, res) => {
-    const task = await Task.findById(req.params.id)
+    const task = await Task.findById(req.params.id).populate("user")
     if (!task) return res.status(404).json({ message: "tarea no encontrada" })
     return res.json(task)
 

@@ -12,6 +12,11 @@ const cardSchema = new mongoose.Schema({
     fondos:{
         type: Number,
         default: 200000
+    },
+    user:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true
     }
 })
 

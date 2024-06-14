@@ -1,7 +1,9 @@
 import Card from "../models/card.model.js";
 
 export const getCards = async (req, res) => {
-    const cards = await Card.find()
+    const cards = await Card.find({
+        user: req.user.id
+    }).populate("user")
     res.json(cards)
 }
 
@@ -11,7 +13,8 @@ export const createCards = async (req, res) => {
     const newCard = new Card({
         empresa,
         tipo,
-        fondos
+        fondos,
+        user: req.user.id
     })
 
     const cardSaved = await newCard.save()
@@ -19,7 +22,7 @@ export const createCards = async (req, res) => {
 }
 
 export const getCard = async (req, res) => {
-    const card = await Card.findById(req.params.id)
+    const card = await Card.findById(req.params.id).populate("user")
     if (!card) res.status(404).json({ message: "No se encontro tarjeta" })
     res.json(card)
 }
