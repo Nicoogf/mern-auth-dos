@@ -2,7 +2,7 @@ import express from "express";
 import morgan from "morgan";
 import authRoutes from "./routes/auth.routes.js" ;
 import tasksRoutes from "./routes/tasks.routes.js" ;
-import cardsRoutes from "./routes/tasks.routes.js" ;
+import cardsRoutes from "./routes/cards.routes.js" ;
 import cookieparser from "cookie-parser"
 
 const app = express () ;
