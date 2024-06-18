@@ -6,14 +6,17 @@ import bcrypt from "bcryptjs";
 
 export const register = async (req, res) => {
 
+
+
   //En el req.body van a venir los datos del usuario Registrado
   const { username, password } = req.body;
 
-
-
-
-
   try {
+
+    const userFound = await User.findOne({username})
+    if(userFound) return res.status(400).json({message: ["El nombre de usuario ya esta en uso"]})
+
+
     //Hash de la contraseña ingresada por el usuario
     const passwordHash = await bcrypt.hash(password, 12)
 

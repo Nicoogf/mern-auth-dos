@@ -4,8 +4,13 @@ import authRoutes from "./routes/auth.routes.js" ;
 import tasksRoutes from "./routes/tasks.routes.js" ;
 import cardsRoutes from "./routes/cards.routes.js" ;
 import cookieparser from "cookie-parser"
+import cors from "cors"
 
 const app = express () ;
+
+app.use(cors({
+    origin: "http://localhost:3000"
+}))
 
 app.use(morgan("dev")) ;
 app.use(express.json()) ;
