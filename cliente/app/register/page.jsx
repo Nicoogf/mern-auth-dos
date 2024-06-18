@@ -49,7 +49,7 @@ const RegisterPage = () => {
 
       </form>
       
-      <p classNamet="text-xs"> Ya tienes una cuenta ?  
+      <p className="text-xs"> Ya tienes una cuenta ?  
 
       <Link href="/loguin" className="text-blue-300"> Inicia Session  </Link>
       </p>

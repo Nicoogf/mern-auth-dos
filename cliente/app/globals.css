@@ -2,7 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+html{
+  max-height: 100vh;
+}
+
 body{
   background-color: rgb(15, 0, 51);
   color: white;
+  height: 100vh;
+  max-height: 100vh;
+  position: relative;
+}
+
+main{
+  max-height: 100vh;
+}
+
+nav{
+  top:0;
+  left: 0;
 }

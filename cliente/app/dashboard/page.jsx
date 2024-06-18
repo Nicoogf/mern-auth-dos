@@ -1,18 +1,19 @@
-"use client" 
-
+"use client"
 import { useAuth } from '@/context/AuthContext'
-import { useRouter } from 'next/navigation'
 import React from 'react'
+import { useRouter } from 'next/navigation'
 
-const AddCardPage = () => {
+const DashboardPage = () => {
   const { user , isAuthenticated } = useAuth()
   const router = useRouter()
 
   if(!isAuthenticated) router.push("/loguin")
 
   return (
-    <div>Profile</div>
+    <div>
+        <h1>Bienvenidos al Dashboard</h1>
+    </div>
   )
 }
 
-export default AddCardPage
+export default DashboardPage

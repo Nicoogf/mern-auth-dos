@@ -34,6 +34,8 @@ export const AuthProvider = ({ children }) => {
         try {
             const res = await loguinRequest(user)
             console.log(res)
+            setUser(res.data)
+            setIsAuthenticated(true)
         } catch (error) {
             console.log(error)
             setErrors(error.response.data)
@@ -48,6 +50,10 @@ export const AuthProvider = ({ children }) => {
     return () => clearTimeout(timer)     
     }
    }, [errors])
+
+   useEffect( () => {
+    
+   } , [] )
 
     return (
         <AuthContext.Provider value={{

@@ -1,18 +1,23 @@
 "use client"
 import { useAuth } from '@/context/AuthContext';
 import Link from 'next/link';
-import React from 'react'
+import React ,{useEffect} from 'react'
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation'
 
 const LoguinPage = () => {
 
   const { register, handleSubmit, formState: { errors } } = useForm()
-  const { signin, errors:signinErrors} = useAuth()
+  const { signin, errors:signinErrors , isAuthenticated} = useAuth()
+  const router = useRouter()
 
   const onSubmit = handleSubmit((data) => {
     signin(data)
   })
 
+  useEffect(() => {
+    if (isAuthenticated) router.push("/cards")
+  }, [isAuthenticated])
 
   return (
     <div className="h-screen flex flex-col justify-center items-center">
@@ -44,7 +49,7 @@ const LoguinPage = () => {
 
       </form>
 
-      <p classNamet="text-xs"> No tienes una cuenta aun ? 
+      <p className="text-xs"> No tienes una cuenta aun ? 
 
       <Link href="/register" className="text-blue-300"> Crea una </Link>
       </p>
