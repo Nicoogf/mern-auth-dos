@@ -62,14 +62,14 @@ export const loguin = async (req, res) => {
     const userFound = await User.findOne({ username })
 
     if (!userFound) {
-      return res.status(400).json({ message: "Usuario no encontrado" })
+      return res.status(400).json(["Usuario no encontrado"])
     }
 
     //Compara contraseña ingresada por el usuario con la guardada en la BD
     const isMatch = await bcrypt.compare(password, userFound.password)
 
     if (!isMatch) {
-      return res.status(400).json({ message: "Credenciales incorrectas" })
+      return res.status(400).json([ "Credenciales incorrectas" ])
     }
 
 

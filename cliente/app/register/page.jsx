@@ -1,31 +1,33 @@
 "use client"
-import React ,  { useEffect } from 'react' ;
-import { useForm } from 'react-hook-form' ;
-import { useAuth } from '@/context/AuthContext' ;
+import React, { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation'
 
 const RegisterPage = () => {
 
-  const router = useRouter () ;
-  const { register, handleSubmit , formState:{errors}} = useForm();
-  const { signup  , isAuthenticated , errors: registerErrors } = useAuth()
+  const router = useRouter();
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { signup, isAuthenticated, errors: registerErrors } = useAuth()
 
-useEffect( () => {
-  if(isAuthenticated) router.push("/cards")
-  } , [isAuthenticated] )
+  useEffect(() => {
+    if (isAuthenticated) router.push("/cards")
+  }, [isAuthenticated])
 
 
-  const onSubmit = handleSubmit(async (values) => { 
+  const onSubmit = handleSubmit(async (values) => {
     signup(values)
   })
 
   return (
     <div className="h-screen flex flex-col justify-center items-center">
+      <h1 className="text-3xl font-bold text-white mb-2"> Registro </h1>
       {
-        registerErrors.map( (error , i ) => (
-          <div key={i} className="text-red-500 text-xs"> { error }</div>
+        registerErrors.map((error, i) => (
+          <div key={i} className="text-red-500 text-xs"> {error}</div>
         ))
       }
+
       <form onSubmit={onSubmit}
         className="flex flex-col w-[400px] mx-auto gap-y-2 bg-[#332851] p-10 rounded-lg">
 
