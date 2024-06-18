@@ -8,7 +8,7 @@ const RegisterPage = () => {
 
   const router = useRouter () ;
   const { register, handleSubmit , formState:{errors}} = useForm();
-  const { signup  , isAuthenticated } = useAuth()
+  const { signup  , isAuthenticated , errors: registerErrors } = useAuth()
 
 useEffect( () => {
   if(isAuthenticated) router.push("/cards")
@@ -20,7 +20,12 @@ useEffect( () => {
   })
 
   return (
-    <div className="h-screen flex justify-center items-center">
+    <div className="h-screen flex flex-col justify-center items-center">
+      {
+        registerErrors.map( (error , i ) => (
+          <div key={i} className="text-red-500 text-xs"> { error }</div>
+        ))
+      }
       <form onSubmit={onSubmit}
         className="flex flex-col w-[400px] mx-auto gap-y-2 bg-[#332851] p-10 rounded-lg">
 

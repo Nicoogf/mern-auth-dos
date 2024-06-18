@@ -14,7 +14,7 @@ export const register = async (req, res) => {
   try {
 
     const userFound = await User.findOne({username})
-    if(userFound) return res.status(400).json({message: ["El nombre de usuario ya esta en uso"]})
+    if(userFound) return res.status(400).json(["El nombre de usuario ya esta en uso"])
 
 
     //Hash de la contraseña ingresada por el usuario
