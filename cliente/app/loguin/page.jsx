@@ -1,5 +1,6 @@
 "use client"
 import { useAuth } from '@/context/AuthContext';
+import Link from 'next/link';
 import React from 'react'
 import { useForm } from 'react-hook-form';
 
@@ -42,6 +43,11 @@ const LoguinPage = () => {
         <button className="bg-[#f0ffcc] text-[#0F0033] p-2 rounded-lg font-semibold"> Ingresar  </button>
 
       </form>
+
+      <p classNamet="text-xs"> No tienes una cuenta aun ? 
+
+      <Link href="/register" className="text-blue-300"> Crea una </Link>
+      </p>
     </div>
   )
 }
