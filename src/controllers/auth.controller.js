@@ -1,12 +1,12 @@
+import { TOKEN_SECRET } from "../config.js";
 import { createAccessToken } from "../libs/jwt.js";
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken"
 
 
 
 export const register = async (req, res) => {
-
-
 
   //En el req.body van a venir los datos del usuario Registrado
   const { username, password } = req.body;
@@ -33,7 +33,7 @@ export const register = async (req, res) => {
 
     //Se crea el token con el id del usuario y se guardaen una cookie
     const token = await createAccessToken({ id: userSaved._id })
-    res.cookie("token", token)
+    res.cookie("token", token )
 
 
     //Respuesta
@@ -110,4 +110,21 @@ export const profile = async (req, res)=> {
     updatedAt: userFound.updatedAt,
     cuentaBancaria: userFound.cuentaBancaria
   })
+}
+
+export const verifyToken = async (req,res) =>{
+  const {token} = req.cookies
+  if(!token) return res.status(401).json({message : "No autorizado, no se encontro token"})
+  jwt.verify(token , TOKEN_SECRET , async( err, user) => {
+  if(err){
+    return res.status(401).json({message : "No autorizado, no se encontro token"})
+  }
+  const userFound = await User.findOne(user.id)
+  if(!userFound) return res.status(401).json({message:"No autorizado, no se encontro token"})
+
+    return res.json({
+      id: userFound._id,
+      username:userFound.username
+    })
+})
 }

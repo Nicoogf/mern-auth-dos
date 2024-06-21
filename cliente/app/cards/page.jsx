@@ -1,9 +1,27 @@
-import React from 'react'
+"use client"
+import { useAuth } from '@/context/AuthContext'
+import React , {useEffect} from 'react'
+import { useRouter } from 'next/navigation'
 
-const CardsPage = () => {
+const CardPage = () => {
+  const { user , isAuthenticated , loading } = useAuth()
+  const router = useRouter()
+
+    useEffect(() => {
+      if (!loading && !isAuthenticated) {
+        router.push("/loguin")
+      }
+    }, [loading, isAuthenticated, router])
+
+    if (loading) return <p>Cargando</p>
+
   return (
-    <div>Card</div>
+    <div>
+      
+    </div>
   )
 }
 
-export default CardsPage
+export default CardPage ;
+
+
