@@ -112,19 +112,26 @@ export const profile = async (req, res)=> {
   })
 }
 
-export const verifyToken = async (req,res) =>{
-  const {token} = req.cookies
-  if(!token) return res.status(401).json({message : "No autorizado, no se encontro token"})
-  jwt.verify(token , TOKEN_SECRET , async( err, user) => {
-  if(err){
-    return res.status(401).json({message : "No autorizado, no se encontro token"})
+export const verifyToken = async (req, res) => {
+  const { token } = req.cookies;
+  if (!token) {
+      return res.status(401).json({ message: "No autorizado, no se encontró token" });
   }
-  const userFound = await User.findOne(user.id)
-  if(!userFound) return res.status(401).json({message:"No autorizado, no se encontro token"})
 
-    return res.json({
-      id: userFound._id,
-      username:userFound.username
-    })
-})
-}
+  try {
+      const decoded = jwt.verify(token, TOKEN_SECRET);
+      const userFound = await User.findOne({ _id: decoded.id });
+
+      if (!userFound) {
+          return res.status(401).json({ message: "No autorizado, usuario no encontrado" });
+      }
+
+      return res.json({
+          id: userFound._id,
+          username: userFound.username,
+      });
+  } catch (error) {
+      console.error(error);
+      return res.status(401).json({ message: "No autorizado, token inválido" });
+  }
+};

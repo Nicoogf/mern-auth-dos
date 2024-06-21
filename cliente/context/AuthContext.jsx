@@ -34,15 +34,20 @@ export const AuthProvider = ({ children }) => {
 
     const signin = async (user) => {
         try {
-            const res = await loguinRequest(user)
-            console.log(res)
-            setUser(res.data)
-            setIsAuthenticated(true)
+            const res = await loguinRequest(user);
+            console.log(res);
+            setUser(res.data);
+            setIsAuthenticated(true);
+            setErrors([]);
         } catch (error) {
-            console.log(error)
-            setErrors(error.response.data)
+            console.log(error);
+            if (error.response && error.response.data) {
+                setErrors(error.response.data);
+            } else {
+                setErrors(["An unexpected error occurred. Please try again."]);
+            }
         }
-    }
+    };
 
     useEffect(() => {
         if (errors.length > 0) {
@@ -54,33 +59,34 @@ export const AuthProvider = ({ children }) => {
     }, [errors])
 
     useEffect(() => {
-        async function checkLoguin() {
-        const cookies = Cookies.get() ;
-        if( !cookies.token) {
-            setIsAuthenticated(false)
-            setLoading(false)
-            return setUser(null)
-        }
-        try {
-            const res = await verifyTokenRequest(cookies.token)
-            if(!res.data){
-                setIsAuthenticated(false)
-                setLoading(false)
-                return;
+        async function checkLogin() {
+            const cookies = Cookies.get();
+            if (!cookies.token) {
+                setIsAuthenticated(false);
+                setLoading(false);
+                return setUser(null);
             }
-            setIsAuthenticated(true)
-            setUser(res.data)
-            setLoading(false)
-        } catch (error) {
-            console.log(error)
-            setIsAuthenticated(false)
-            setUser(null)
-            setLoading(false)
+            try {
+                const res = await verifyTokenRequest();
+                if (!res.data) {
+                    setIsAuthenticated(false);
+                    setLoading(false);
+                    return;
+                }
+                setIsAuthenticated(true);
+                setUser(res.data);
+                setLoading(false);
+            } catch (error) {
+                console.error("Error verifying token:", error);
+                setIsAuthenticated(false);
+                setUser(null);
+                setLoading(false);
+                setErrors(["Error de conexión. Por favor, inténtalo de nuevo más tarde."]);
+            }
         }
-        }
-        checkLoguin() ; ;
-    }, [])
-
+        checkLogin();
+    }, []);
+    
     return (
         <AuthContext.Provider value={{
             signup,
