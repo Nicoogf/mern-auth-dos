@@ -12,6 +12,7 @@ const LoguinPage = () => {
   const router = useRouter()
 
   const onSubmit = handleSubmit((data) => {
+    console.log(data)
     signin(data)
   })
 

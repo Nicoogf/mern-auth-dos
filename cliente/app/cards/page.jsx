@@ -8,6 +8,7 @@ const CardPage = () => {
   const router = useRouter()
 
     useEffect(() => {
+      console.log(user)
       if (!loading && !isAuthenticated) {
         router.push("/loguin")
       }
@@ -17,6 +18,9 @@ const CardPage = () => {
 
   return (
     <div>
+      <h1> {user.username} bienvenido! </h1>
+      <p> $ {user.cuentaBancaria} </p>
+      <p> Dinero en cuenta </p>
       
     </div>
   )
