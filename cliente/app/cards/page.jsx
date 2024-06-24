@@ -4,6 +4,7 @@ import React , {useEffect} from 'react'
 import { useRouter } from 'next/navigation'
 
 const CardPage = () => {
+  let numero = 5 ;
   const { user , isAuthenticated , loading } = useAuth()
   const router = useRouter()
 
